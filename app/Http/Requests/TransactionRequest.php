@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\RoleEnum;
+use App\Enums\TypeTransaction;
 use App\Http\Traits\GenerateCodeTrait;
 use App\Http\Traits\HasPhoneNumber;
 use App\Models\Province;
@@ -24,7 +25,12 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'type' => ['required',
+                Rule::in(collect(TypeTransaction::cases())->pluck('value')),
+            ],
+            'qty' => 'required|int|min:0',
+            'price' => 'required|int|min:0',
+            'date' => 'required|date',
         ];
     }
 }
